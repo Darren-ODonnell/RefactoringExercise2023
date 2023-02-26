@@ -25,6 +25,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -578,8 +579,8 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	// create vector of vectors with all Employee details
 	private Vector<Object> getAllEmloyees() {
 		// vector of Employee objects
-		Vector<Object> allEmployee = new Vector<Object>();
-		Vector<Object> empDetails;// vector of each employee details
+		Vector<Employee> allEmployee = new Vector<Employee>();
+//		Vector<Employee> empDetails;// vector of each employee details
 		long byteStart = currentByteStart;
 		int firstId;
 
@@ -587,22 +588,28 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		firstId = currentEmployee.getEmployeeId();
 		// loop until all Employees are added to vector
 		do {
-			empDetails = new Vector<Object>();
-			empDetails.addElement(new Integer(currentEmployee.getEmployeeId()));
-			empDetails.addElement(currentEmployee.getPps());
-			empDetails.addElement(currentEmployee.getSurname());
-			empDetails.addElement(currentEmployee.getFirstName());
-			empDetails.addElement(new Character(currentEmployee.getGender()));
-			empDetails.addElement(currentEmployee.getDepartment());
-			empDetails.addElement(new Double(currentEmployee.getSalary()));
-			empDetails.addElement(new Boolean(currentEmployee.getFullTime()));
+			EmployeeBuilder builder = new EmployeeBuilder();
+			builder.setId(currentEmployee.getEmployeeId())
+					.setPps(currentEmployee.getPps())
+					.setSurname(currentEmployee.getSurname())
+					.setFirstName(currentEmployee.getFirstName())
+					.setGender(currentEmployee.getGender())
+					.setDepartment(currentEmployee.getDepartment())
+					.setSalary(currentEmployee.getSalary())
+					.setFullTime(currentEmployee.getFullTime());
 
-			allEmployee.addElement(empDetails);
+			try{
+				allEmployee.addElement(builder.build());
+			}catch(IllegalStateException e){
+				e.printStackTrace();
+			}
 			nextRecord();// look for next record
 		} while (firstId != currentEmployee.getEmployeeId());// end do - while
 		currentByteStart = byteStart;
 
-		return allEmployee;
+		return allEmployee.stream()
+				.map(Employee::toVector)
+				.collect(Collectors.toCollection(Vector::new));
 	}// end getAllEmployees
 
 	// activate field for editing

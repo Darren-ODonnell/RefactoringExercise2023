@@ -4,6 +4,8 @@
  * 
  * */
 
+import java.util.Vector;
+
 public class Employee{
 	private int employeeId;
 	private String pps;
@@ -117,4 +119,16 @@ public class Employee{
 				+ "\nFirst Name: " + this.firstName + "\nGender: " + this.gender + "\nDepartment: " + this.department + "\nSalary: " + this.salary
 				+ "\nFull Time: " + bool;
 	}// end toString
+	public Vector<Object> toVector() {
+		Vector<Object> v = new Vector<Object>();
+		v.add(this.employeeId);
+		v.add(this.pps);
+		v.add(this.surname);
+		v.add(this.firstName);
+		v.add(this.gender);
+		v.add(this.department);
+		v.add(this.salary);
+		v.add(this.fullTime);
+		return v;
+	}
 }// end class Employee
