@@ -709,7 +709,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end checkForChanges
 
 	// check for input in text fields
-	private boolean checkInput() {
+	protected boolean checkInput() {
 		boolean valid;
 		// if any of inputs are in wrong format, colour text field and display
 		// message
