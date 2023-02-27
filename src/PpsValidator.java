@@ -22,7 +22,6 @@ public class PpsValidator extends InputValidator {
     @Override
     public boolean validate() {
         boolean valid = true;
-        String pps = ppsField.getText().trim();
 
         if (ppsField.isEditable() && ppsField.getText().trim().isEmpty()) {
             ppsField.setBackground(new Color(255, 150, 150));

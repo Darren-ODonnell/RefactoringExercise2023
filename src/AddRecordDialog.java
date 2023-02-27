@@ -47,62 +47,23 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 
 	// initialize dialog container
 	public Container dialogPane() {
-		JPanel empDetails, buttonPanel;
-		empDetails = new JPanel(new MigLayout());
-		buttonPanel = new JPanel();
-		JTextField field;
 
-		empDetails.setBorder(BorderFactory.createTitledBorder("Employee Details"));
-
-		empDetails.add(new JLabel("ID:"), "growx, pushx");
-		empDetails.add(idField = new JTextField(20), "growx, pushx, wrap");
-		idField.setEditable(false);
-		
-
-		empDetails.add(new JLabel("PPS Number:"), "growx, pushx");
-		empDetails.add(ppsField = new JTextField(20), "growx, pushx, wrap");
-
-		empDetails.add(new JLabel("Surname:"), "growx, pushx");
-		empDetails.add(surnameField = new JTextField(20), "growx, pushx, wrap");
-
-		empDetails.add(new JLabel("First Name:"), "growx, pushx");
-		empDetails.add(firstNameField = new JTextField(20), "growx, pushx, wrap");
-
-		empDetails.add(new JLabel("Gender:"), "growx, pushx");
-		empDetails.add(genderCombo = new JComboBox<String>(this.parent.gender), "growx, pushx, wrap");
-
-		empDetails.add(new JLabel("Department:"), "growx, pushx");
-		empDetails.add(departmentCombo = new JComboBox<String>(this.parent.department), "growx, pushx, wrap");
-
-		empDetails.add(new JLabel("Salary:"), "growx, pushx");
-		empDetails.add(salaryField = new JTextField(20), "growx, pushx, wrap");
-
-		empDetails.add(new JLabel("Full Time:"), "growx, pushx");
-		empDetails.add(fullTimeCombo = new JComboBox<String>(this.parent.fullTime), "growx, pushx, wrap");
-
-		buttonPanel.add(save = new JButton("Save"));
-		save.addActionListener(this);
-		save.requestFocus();
-		buttonPanel.add(cancel = new JButton("Cancel"));
-		cancel.addActionListener(this);
-
-		empDetails.add(buttonPanel, "span 2,growx, pushx,wrap");
-		// loop through all panel components and add fonts and listeners
-		for (int i = 0; i < empDetails.getComponentCount(); i++) {
-			empDetails.getComponent(i).setFont(this.parent.font1);
-			if (empDetails.getComponent(i) instanceof JComboBox) {
-				empDetails.getComponent(i).setBackground(Color.WHITE);
-			}// end if
-			else if(empDetails.getComponent(i) instanceof JTextField){
-				field = (JTextField) empDetails.getComponent(i);
-				if(field == ppsField)
-					field.setDocument(new JTextFieldLimit(9));
-				else
-				field.setDocument(new JTextFieldLimit(20));
-			}// end else if
-		}// end for
-		idField.setText(Integer.toString(this.parent.getNextFreeId()));
-		return empDetails;
+		EmployeeDetailsDialogBuilder builder = new EmployeeDetailsDialogBuilder();
+		return builder.setEmpDetailsBorder("Employee Details")
+				.setIdFieldEditable(true)
+				.setIdFieldText(Integer.toString(this.parent.getNextFreeId()))
+				.setPpsFieldDocument()
+				.setSurnameFieldDocument()
+				.setFirstNameFieldDocument()
+				.setFont(this.parent.font1)
+				.setGender(this.parent.gender)
+				.setDepartment(this.parent.department)
+				.setFullTime(this.parent.fullTime)
+				.setSaveButton(save = new JButton("Save"))
+				.setSaveActionListener(this)
+				.setCancelButton(cancel = new JButton("Cancel"))
+				.setCancelActionListener(this)
+				.build();
 	}
 
 	// add record to file
@@ -112,13 +73,27 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 
 		if (((String) fullTimeCombo.getSelectedItem()).equalsIgnoreCase("Yes"))
 			fullTime = true;
-		// create new Employee record with details from text fields
-		theEmployee = new Employee(Integer.parseInt(idField.getText()), ppsField.getText().toUpperCase(), surnameField.getText().toUpperCase(),
-				firstNameField.getText().toUpperCase(), genderCombo.getSelectedItem().toString().charAt(0),
-				departmentCombo.getSelectedItem().toString(), Double.parseDouble(salaryField.getText()), fullTime);
-		this.parent.currentEmployee = theEmployee;
-		this.parent.addRecord(theEmployee);
-		this.parent.displayRecords(theEmployee);
+		// create new Employee record with details from text field
+		EmployeeBuilder builder = new EmployeeBuilder();
+
+		try{
+			theEmployee = builder.setId(Integer.parseInt(idField.getText()))
+					.setPps(ppsField.getText().toUpperCase())
+					.setSurname(surnameField.getText().toUpperCase())
+					.setFirstName(firstNameField.getText().toUpperCase())
+					.setGender(genderCombo.getSelectedItem().toString().charAt(0))
+					.setDepartment(departmentCombo.getSelectedItem().toString())
+					.setSalary(Double.parseDouble(salaryField.getText()))
+					.setFullTime(fullTime)
+					.build();
+
+			this.parent.currentEmployee = theEmployee;
+			this.parent.addRecord(theEmployee);
+			this.parent.displayRecords(theEmployee);
+			}catch(IllegalStateException e){
+				e.printStackTrace();
+			}
+
 	}
 
 	// check for input in text fields
@@ -139,7 +114,7 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 	// action performed
 	public void actionPerformed(ActionEvent e) {
 		// if chosen option save, save record to file
-		if (e.getSource() == save) {
+		if (e.getActionCommand().equals("Save")) {
 			// if inputs correct, save record
 			if (checkInput()) {
 				addRecord();// add record to file
@@ -152,7 +127,7 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 				setToWhite();
 			}// end else
 		}// end if
-		else if (e.getSource() == cancel)
+		else if (e.getActionCommand().equals("Cancel"))
 			dispose();// dispose dialog
 	}// end actionPerformed
 }// end class AddRecordDialog
