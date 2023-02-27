@@ -132,13 +132,8 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 
 	// set text field to white colour
 	public void setToWhite() {
-		ppsField.setBackground(Color.WHITE);
-		surnameField.setBackground(Color.WHITE);
-		firstNameField.setBackground(Color.WHITE);
-		salaryField.setBackground(Color.WHITE);
-		genderCombo.setBackground(Color.WHITE);
-		departmentCombo.setBackground(Color.WHITE);
-		fullTimeCombo.setBackground(Color.WHITE);
+		this.parent.setToWhite();
+
 	}// end setToWhite
 
 	// action performed

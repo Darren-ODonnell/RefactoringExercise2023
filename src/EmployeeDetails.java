@@ -741,7 +741,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}
 
 	// set text field background colour to white
-	private void setToWhite() {
+	protected void setToWhite() {
 		ppsField.setBackground(UIManager.getColor("TextField.background"));
 		surnameField.setBackground(UIManager.getColor("TextField.background"));
 		firstNameField.setBackground(UIManager.getColor("TextField.background"));
