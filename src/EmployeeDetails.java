@@ -659,8 +659,8 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		// check for correct PPS format based on assignment description
 		if (pps.length() == 8 || pps.length() == 9) {
 			if (Character.isDigit(pps.charAt(0)) && Character.isDigit(pps.charAt(1))
-					&& Character.isDigit(pps.charAt(2))	&& Character.isDigit(pps.charAt(3)) 
-					&& Character.isDigit(pps.charAt(4))	&& Character.isDigit(pps.charAt(5)) 
+					&& Character.isDigit(pps.charAt(2))	&& Character.isDigit(pps.charAt(3))
+					&& Character.isDigit(pps.charAt(4))	&& Character.isDigit(pps.charAt(5))
 					&& Character.isDigit(pps.charAt(6))	&& Character.isLetter(pps.charAt(7))
 					&& (pps.length() == 8 || Character.isLetter(pps.charAt(8)))) {
 				// open file for reading
@@ -713,54 +713,94 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		boolean valid = true;
 		// if any of inputs are in wrong format, colour text field and display
 		// message
-		if (ppsField.isEditable() && ppsField.getText().trim().isEmpty()) {
-			ppsField.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
-		if (ppsField.isEditable() && correctPps(ppsField.getText().trim(), currentByteStart)) {
-			ppsField.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
-		if (surnameField.isEditable() && surnameField.getText().trim().isEmpty()) {
-			surnameField.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
-		if (firstNameField.isEditable() && firstNameField.getText().trim().isEmpty()) {
-			firstNameField.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
-		if (genderCombo.getSelectedIndex() == 0 && genderCombo.isEnabled()) {
-			genderCombo.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
-		if (departmentCombo.getSelectedIndex() == 0 && departmentCombo.isEnabled()) {
-			departmentCombo.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
-		try {// try to get values from text field
-			Double.parseDouble(salaryField.getText());
-			// check if salary is greater than 0
-			if (Double.parseDouble(salaryField.getText()) < 0) {
-				salaryField.setBackground(new Color(255, 150, 150));
-				valid = false;
-			} // end if
-		} // end try
-		catch (NumberFormatException num) {
-			if (salaryField.isEditable()) {
-				salaryField.setBackground(new Color(255, 150, 150));
-				valid = false;
-			} // end if
-		} // end catch
-		if (fullTimeCombo.getSelectedIndex() == 0 && fullTimeCombo.isEnabled()) {
-			fullTimeCombo.setBackground(new Color(255, 150, 150));
-			valid = false;
-		} // end if
+
+		PpsValidator validator = new PpsValidator(ppsField, currentByteStart, application, file);
+		boolean isValid = validator.validate();
+		isValid = validator.correctPps(ppsField.getText().trim(), currentByteStart);
+
+		while (isValid) {
+			// do something
+			InputValidator textFieldValidator = new TextFieldValidator(firstNameField);
+			isValid = textFieldValidator.validate();
+
+			textFieldValidator = new TextFieldValidator(surnameField);
+			isValid = textFieldValidator.validate();
+
+			InputValidator comboValidator = new ComboValidator(genderCombo);
+			isValid = comboValidator.validate();
+
+			comboValidator = new ComboValidator(departmentCombo);
+			isValid = comboValidator.validate();
+
+			InputValidator salaryValidator = new SalaryValidator(salaryField);
+			isValid = salaryValidator.validate();
+
+			InputValidator fullTimeValidator = new ComboValidator(fullTimeCombo);
+			isValid = fullTimeValidator.validate();
+
+		}
+			// show error message
+			if (!valid)
+				JOptionPane.showMessageDialog(null, "Wrong values or format! Please check!");
+			// set text field to white colour if text fields are editable
+			if (ppsField.isEditable())
+				setToWhite();
+		}
+
+
+		/***
+		 *
+		 * TODO
+		 */
+
+//		if (ppsField.isEditable() && ppsField.getText().trim().isEmpty()) {
+//			ppsField.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
+//		if (ppsField.isEditable() && correctPps(ppsField.getText().trim(), currentByteStart)) {
+//			ppsField.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
+//		if (surnameField.isEditable() && surnameField.getText().trim().isEmpty()) {
+//			surnameField.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
+//		if (firstNameField.isEditable() && firstNameField.getText().trim().isEmpty()) {
+//			firstNameField.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
+//		if (genderCombo.getSelectedIndex() == 0 && genderCombo.isEnabled()) {
+//			genderCombo.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
+//		if (departmentCombo.getSelectedIndex() == 0 && departmentCombo.isEnabled()) {
+//			departmentCombo.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
+//		try {// try to get values from text field
+//			Double.parseDouble(salaryField.getText());
+//			// check if salary is greater than 0
+//			if (Double.parseDouble(salaryField.getText()) < 0) {
+//				salaryField.setBackground(new Color(255, 150, 150));
+//				valid = false;
+//			} // end if
+//		} // end try
+//		catch (NumberFormatException num) {
+//			if (salaryField.isEditable()) {
+//				salaryField.setBackground(new Color(255, 150, 150));
+//				valid = false;
+//			} // end if
+//		} // end catch
+//		if (fullTimeCombo.getSelectedIndex() == 0 && fullTimeCombo.isEnabled()) {
+//			fullTimeCombo.setBackground(new Color(255, 150, 150));
+//			valid = false;
+//		} // end if
 			// display message if any input or format is wrong
-		if (!valid)
-			JOptionPane.showMessageDialog(null, "Wrong values or format! Please check!");
-		// set text field to white colour if text fields are editable
-		if (ppsField.isEditable())
-			setToWhite();
+//		if (!valid)
+//			JOptionPane.showMessageDialog(null, "Wrong values or format! Please check!");
+//		// set text field to white colour if text fields are editable
+//		if (ppsField.isEditable())
+//			setToWhite();
 
 		return valid;
 	}
