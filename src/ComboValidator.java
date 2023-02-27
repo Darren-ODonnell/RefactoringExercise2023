@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ComboValidator implements InputValidator{
+public class ComboValidator extends InputValidator{
     private final JComboBox<String> combo;
 
     public ComboValidator(JComboBox<String> combo) {
@@ -17,4 +17,5 @@ public class ComboValidator implements InputValidator{
         }
         return valid;
     }
+
 }

@@ -3,7 +3,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Random;
 
-public class PpsValidator implements InputValidator {
+public class PpsValidator extends InputValidator {
     private final JTextField ppsField;
     private final long currentByteStart;
     private RandomFile application;
@@ -32,6 +32,7 @@ public class PpsValidator implements InputValidator {
             ppsField.setBackground(new Color(255, 150, 150));
             valid = false;
         } // end if
+
         return valid;
     }
 
@@ -58,4 +59,5 @@ public class PpsValidator implements InputValidator {
 
         return ppsExist;
     }// end correctPPS
+
 }

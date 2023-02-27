@@ -710,97 +710,32 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// check for input in text fields
 	private boolean checkInput() {
-		boolean valid = true;
+		boolean valid;
 		// if any of inputs are in wrong format, colour text field and display
 		// message
 
-		PpsValidator validator = new PpsValidator(ppsField, currentByteStart, application, file);
-		boolean isValid = validator.validate();
-		isValid = validator.correctPps(ppsField.getText().trim(), currentByteStart);
+		InputValidator ppsValidator = new PpsValidator(ppsField, currentByteStart, application, file);
+		InputValidator firstNameValidator = new TextFieldValidator(firstNameField);
+		InputValidator surnameValidator = new TextFieldValidator(surnameField);
+		InputValidator genderValidator = new ComboValidator(genderCombo);
+		InputValidator departmentValidator = new ComboValidator(departmentCombo);
+		InputValidator salaryValidator = new SalaryValidator(salaryField);
+		InputValidator fullTimeValidator = new ComboValidator(fullTimeCombo);
 
-		while (isValid) {
-			// do something
-			InputValidator textFieldValidator = new TextFieldValidator(firstNameField);
-			isValid = textFieldValidator.validate();
+		ppsValidator.setNextValidator(firstNameValidator)
+				.setNextValidator(surnameValidator)
+				.setNextValidator(genderValidator)
+				.setNextValidator(departmentValidator)
+				.setNextValidator(salaryValidator)
+				.setNextValidator(fullTimeValidator);
 
-			textFieldValidator = new TextFieldValidator(surnameField);
-			isValid = textFieldValidator.validate();
-
-			InputValidator comboValidator = new ComboValidator(genderCombo);
-			isValid = comboValidator.validate();
-
-			comboValidator = new ComboValidator(departmentCombo);
-			isValid = comboValidator.validate();
-
-			InputValidator salaryValidator = new SalaryValidator(salaryField);
-			isValid = salaryValidator.validate();
-
-			InputValidator fullTimeValidator = new ComboValidator(fullTimeCombo);
-			isValid = fullTimeValidator.validate();
-
-		}
+		valid = ppsValidator.validate();
 			// show error message
 			if (!valid)
 				JOptionPane.showMessageDialog(null, "Wrong values or format! Please check!");
 			// set text field to white colour if text fields are editable
 			if (ppsField.isEditable())
 				setToWhite();
-		}
-
-
-		/***
-		 *
-		 * TODO
-		 */
-
-//		if (ppsField.isEditable() && ppsField.getText().trim().isEmpty()) {
-//			ppsField.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-//		if (ppsField.isEditable() && correctPps(ppsField.getText().trim(), currentByteStart)) {
-//			ppsField.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-//		if (surnameField.isEditable() && surnameField.getText().trim().isEmpty()) {
-//			surnameField.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-//		if (firstNameField.isEditable() && firstNameField.getText().trim().isEmpty()) {
-//			firstNameField.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-//		if (genderCombo.getSelectedIndex() == 0 && genderCombo.isEnabled()) {
-//			genderCombo.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-//		if (departmentCombo.getSelectedIndex() == 0 && departmentCombo.isEnabled()) {
-//			departmentCombo.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-//		try {// try to get values from text field
-//			Double.parseDouble(salaryField.getText());
-//			// check if salary is greater than 0
-//			if (Double.parseDouble(salaryField.getText()) < 0) {
-//				salaryField.setBackground(new Color(255, 150, 150));
-//				valid = false;
-//			} // end if
-//		} // end try
-//		catch (NumberFormatException num) {
-//			if (salaryField.isEditable()) {
-//				salaryField.setBackground(new Color(255, 150, 150));
-//				valid = false;
-//			} // end if
-//		} // end catch
-//		if (fullTimeCombo.getSelectedIndex() == 0 && fullTimeCombo.isEnabled()) {
-//			fullTimeCombo.setBackground(new Color(255, 150, 150));
-//			valid = false;
-//		} // end if
-			// display message if any input or format is wrong
-//		if (!valid)
-//			JOptionPane.showMessageDialog(null, "Wrong values or format! Please check!");
-//		// set text field to white colour if text fields are editable
-//		if (ppsField.isEditable())
-//			setToWhite();
 
 		return valid;
 	}

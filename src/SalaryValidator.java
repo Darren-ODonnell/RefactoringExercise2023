@@ -1,9 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class SalaryValidator implements InputValidator{
+public class SalaryValidator extends InputValidator{
     private final JTextField salary;
-
 
     public SalaryValidator(JTextField salary) {
         this.salary = salary;
@@ -26,4 +25,5 @@ public class SalaryValidator implements InputValidator{
         }
         return valid;
     }
+
 }

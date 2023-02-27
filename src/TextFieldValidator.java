@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class TextFieldValidator implements InputValidator{
+public class TextFieldValidator extends InputValidator{
     private final JTextField textField;
 
     public TextFieldValidator(JTextField textField) {
@@ -17,4 +17,5 @@ public class TextFieldValidator implements InputValidator{
         }
         return valid;
     }
+
 }
