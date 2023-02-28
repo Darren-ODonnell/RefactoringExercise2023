@@ -116,14 +116,6 @@ public class EmployeeSummaryDialog extends JDialog implements ActionListener {
 		return summaryDialog;
 	}// end summaryPane
 
-	private Object[][] convertVectorToObjectArray(Vector<Employee> allEmployees) {
-		Object[][] data = new Object[allEmployees.size()][];
-		for (int i = 0; i < allEmployees.size(); i++) {
-			Employee emp = allEmployees.get(i);
-			data[i] = new Object[]{emp.getEmployeeId(), emp.getPps(), emp.getSurname(), emp.getFirstName(), emp.getGender(), emp.getDepartment(), emp.getSalary(), emp.getFullTime()};
-		}
-		return data;
-	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == back){
