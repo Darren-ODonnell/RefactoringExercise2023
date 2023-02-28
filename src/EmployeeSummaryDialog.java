@@ -77,7 +77,8 @@ public class EmployeeSummaryDialog extends JDialog implements ActionListener {
 		Vector<Vector<Object>> employeeData = new Vector<Vector<Object>>();
 		for (Object o : allEmployees) {
 			try{ //Ensures the data returning to the table is of the type employee
-				Employee e = (Employee) o;
+				Vector<Object> obj = (Vector<Object>) o;
+				Employee e = Employee.fromVector(obj);
 				employeeData.add(e.toVector());
 			}catch (ClassCastException e){
 				e.printStackTrace();

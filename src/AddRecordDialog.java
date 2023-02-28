@@ -50,15 +50,20 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 
 		EmployeeDetailsDialogBuilder builder = new EmployeeDetailsDialogBuilder();
 		return builder.setEmpDetailsBorder("Employee Details")
+				.setIdField(idField = new JTextField(20))
 				.setIdFieldEditable(true)
 				.setIdFieldText(Integer.toString(this.parent.getNextFreeId()))
-				.setPpsFieldDocument()
-				.setSurnameFieldDocument()
-				.setFirstNameFieldDocument()
+				.setPpsFieldDocument(ppsField = new JTextField(9))
+				.setSurnameFieldDocument(surnameField = new JTextField(9))
+				.setFirstNameFieldDocument(firstNameField = new JTextField(9))
 				.setFont(this.parent.font1)
+				.setGenderCombo(genderCombo = new JComboBox<>())
 				.setGender(this.parent.gender)
+				.setDepartmentCombo(departmentCombo = new JComboBox<>())
 				.setDepartment(this.parent.department)
+				.setFullTimeCombo(fullTimeCombo = new JComboBox<>())
 				.setFullTime(this.parent.fullTime)
+				.setSalary(salaryField = new JTextField(20))
 				.setSaveButton(save = new JButton("Save"))
 				.setSaveActionListener(this)
 				.setCancelButton(cancel = new JButton("Cancel"))
@@ -102,7 +107,30 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 		// if any of inputs are in wrong format, colour text field and display
 		// message
 
-		return this.parent.checkInput();
+		InputValidator ppsValidator = new PpsExistsValidator(ppsField, this.parent.currentByteStart, this.parent.application, this.parent.file);
+		InputValidator firstNameValidator = new TextFieldValidator(firstNameField);
+		InputValidator surnameValidator = new TextFieldValidator(surnameField);
+		InputValidator genderValidator = new ComboValidator(genderCombo);
+		InputValidator departmentValidator = new ComboValidator(departmentCombo);
+		InputValidator salaryValidator = new SalaryValidator(salaryField);
+		InputValidator fullTimeValidator = new ComboValidator(fullTimeCombo);
+
+		ppsValidator.setNextValidator(firstNameValidator)
+				.setNextValidator(surnameValidator)
+				.setNextValidator(genderValidator)
+				.setNextValidator(departmentValidator)
+				.setNextValidator(salaryValidator)
+				.setNextValidator(fullTimeValidator);
+
+		valid = ppsValidator.validate();
+		// show error message
+		if (!valid)
+			JOptionPane.showMessageDialog(null, "Wrong values or format! Please check!");
+		// set text field to white colour if text fields are editable
+		if (ppsField.isEditable())
+			setToWhite();
+
+		return valid;
 	}
 
 	// set text field to white colour

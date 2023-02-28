@@ -131,4 +131,17 @@ public class Employee{
 		v.add(this.fullTime);
 		return v;
 	}
+
+	public static Employee fromVector(Vector<Object> v) {
+		Employee e = new Employee();
+		e.setEmployeeId((int) v.get(0));
+		e.setPps((String) v.get(1));
+		e.setSurname((String) v.get(2));
+		e.setFirstName((String) v.get(3));
+		e.setGender((Character) v.get(4));
+		e.setDepartment((String) v.get(5));
+		e.setSalary((double) v.get(6));
+		e.setFullTime((boolean) v.get(7));
+		return e;
+	}
 }// end class Employee

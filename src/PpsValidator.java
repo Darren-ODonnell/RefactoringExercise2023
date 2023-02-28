@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.Random;
 
 public class PpsValidator extends InputValidator {
-    private final JTextField ppsField;
-    private final long currentByteStart;
-    private RandomFile application;
-    private File file;
+    protected final JTextField ppsField;
+    protected final long currentByteStart;
+    protected RandomFile application;
+    protected File file;
 
 
     public PpsValidator(JTextField ppsField, long currentByteStart, RandomFile application, File file) {
@@ -35,28 +35,19 @@ public class PpsValidator extends InputValidator {
         return valid;
     }
 
-    public boolean correctPps(String pps, long currentByte) {
-        boolean ppsExist = false;
+    public boolean correctPps(String pps, long currentByte){
         // check for correct PPS format based on assignment description
         if (pps.length() == 8 || pps.length() == 9) {
-            if (Character.isDigit(pps.charAt(0)) && Character.isDigit(pps.charAt(1))
-                    && Character.isDigit(pps.charAt(2))	&& Character.isDigit(pps.charAt(3))
-                    && Character.isDigit(pps.charAt(4))	&& Character.isDigit(pps.charAt(5))
-                    && Character.isDigit(pps.charAt(6))	&& Character.isLetter(pps.charAt(7))
-                    && (pps.length() == 8 || Character.isLetter(pps.charAt(8)))) {
-                // open file for reading
-                application.openReadFile(file.getAbsolutePath());
-                // look in file is PPS already in use
-                ppsExist = application.isPpsExist(pps, currentByte);
-                application.closeReadFile();// close file for reading
-            } // end if
-            else
-                ppsExist = true;
-        } // end if
-        else
-            ppsExist = true;
+            if(Character.isDigit(pps.charAt(0)) && Character.isDigit(pps.charAt(1))
+                    && Character.isDigit(pps.charAt(2)) && Character.isDigit(pps.charAt(3))
+                    && Character.isDigit(pps.charAt(4)) && Character.isDigit(pps.charAt(5))
+                    && Character.isDigit(pps.charAt(6)) && Character.isLetter(pps.charAt(7))
+                    && (pps.length() == 8 || Character.isLetter(pps.charAt(8))))
+                return false;
+        }
+        return true;
+    }
 
-        return ppsExist;
-    }// end correctPPS
+
 
 }

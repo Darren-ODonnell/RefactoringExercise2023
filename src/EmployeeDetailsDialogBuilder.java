@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 public class EmployeeDetailsDialogBuilder {
     private JPanel empDetails = new JPanel(new MigLayout());
     private JPanel buttonPanel = new JPanel();
-    private JTextField idField = new JTextField(20);
-    private JTextField ppsField = new JTextField(20);
-    private JTextField surnameField = new JTextField(20);
-    private JTextField firstNameField = new JTextField(20);
-    private JComboBox<String> genderCombo = new JComboBox<String>();
-    private JComboBox<String> departmentCombo = new JComboBox<String>();
-    private JTextField salaryField = new JTextField(20);
-    private JComboBox<String> fullTimeCombo = new JComboBox<String>();
+    private JTextField idField;
+    private JTextField ppsField;
+    private JTextField surnameField;
+    private JTextField firstNameField;
+    private JComboBox<String> genderCombo;
+    private JComboBox<String> departmentCombo;
+    private JTextField salaryField;
+    private JComboBox<String> fullTimeCombo;
     private JButton save;
     private JButton cancel;
     private Font font;
@@ -31,23 +31,28 @@ public class EmployeeDetailsDialogBuilder {
         return this;
     }
 
+    public EmployeeDetailsDialogBuilder setIdField(JTextField idField) {
+        this.idField = idField;
+        return this;
+    }
+
     public EmployeeDetailsDialogBuilder setIdFieldText(String text) {
         idField.setText(text);
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setPpsFieldDocument() {
-        ppsField.setDocument(new JTextFieldLimit(9));
+    public EmployeeDetailsDialogBuilder setPpsFieldDocument(JTextField ppsFieldDocument) {
+        ppsField = ppsFieldDocument;
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setSurnameFieldDocument() {
-        surnameField.setDocument(new JTextFieldLimit(9));
+    public EmployeeDetailsDialogBuilder setSurnameFieldDocument(JTextField surnameFieldDocument) {
+        surnameField = surnameFieldDocument;
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setFirstNameFieldDocument() {
-        firstNameField.setDocument(new JTextFieldLimit(9));
+    public EmployeeDetailsDialogBuilder setFirstNameFieldDocument(JTextField firstNameFieldDocument) {
+        firstNameField = firstNameFieldDocument;
         return this;
     }
 
@@ -94,6 +99,25 @@ public class EmployeeDetailsDialogBuilder {
         return this;
     }
 
+    public EmployeeDetailsDialogBuilder setFullTimeCombo(JComboBox<String> fullTimeCombo) {
+        this.fullTimeCombo = fullTimeCombo;
+        return this;
+    }
+
+    public EmployeeDetailsDialogBuilder setDepartmentCombo(JComboBox<String> departmentCombo) {
+        this.departmentCombo = departmentCombo;
+        return this;
+    }
+    public EmployeeDetailsDialogBuilder setGenderCombo(JComboBox<String> genderCombo) {
+        this.genderCombo = genderCombo;
+        return this;
+    }
+
+    public EmployeeDetailsDialogBuilder setSalary(JTextField salaryField) {
+        this.salaryField = salaryField;
+        return this;
+    }
+
     public JPanel build() {
         if(idField != null) {
             empDetails.add(new JLabel("ID:"), "growx, pushx");
@@ -124,6 +148,11 @@ public class EmployeeDetailsDialogBuilder {
             empDetails.add(new JLabel("Department:"), "growx, pushx");
             empDetails.add(departmentCombo, "growx, pushx, wrap");
         }
+
+        if(fullTimeCombo != null) {
+            empDetails.add(new JLabel("Full Time:"), "growx, pushx");
+            empDetails.add(fullTimeCombo, "growx, pushx, wrap");
+        }
         if(salaryField != null) {
             empDetails.add(new JLabel("Salary:"), "growx, pushx");
             empDetails.add(salaryField, "growx, pushx, wrap");
@@ -149,6 +178,7 @@ public class EmployeeDetailsDialogBuilder {
             }
         return empDetails;
     }
+
 
 
 }
