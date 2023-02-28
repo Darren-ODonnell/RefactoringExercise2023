@@ -23,7 +23,11 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 public class AddRecordDialog extends JDialog implements ActionListener {
-	JTextField idField, ppsField, surnameField, firstNameField, salaryField;
+	JTextField idField = new JTextField(20),
+			ppsField = new JTextField(9),
+			surnameField = new JTextField(20),
+			firstNameField = new JTextField(20),
+			salaryField = new JTextField(20);
 	JComboBox<String> genderCombo, departmentCombo, fullTimeCombo;
 	JButton save, cancel;
 	EmployeeDetails parent;
@@ -50,24 +54,17 @@ public class AddRecordDialog extends JDialog implements ActionListener {
 
 		EmployeeDetailsDialogBuilder builder = new EmployeeDetailsDialogBuilder();
 		return builder.setEmpDetailsBorder("Employee Details")
-				.setIdField(idField = new JTextField(20))
-				.setIdFieldEditable(true)
-				.setIdFieldText(Integer.toString(this.parent.getNextFreeId()))
-				.setPpsFieldDocument(ppsField = new JTextField(9))
-				.setSurnameFieldDocument(surnameField = new JTextField(9))
-				.setFirstNameFieldDocument(firstNameField = new JTextField(9))
+				.setIdField(idField, true, parent.getNextFreeId())
+				.setPpsFieldDocument(ppsField )
+				.setSurnameFieldDocument(surnameField)
+				.setFirstNameFieldDocument(firstNameField)
 				.setFont(this.parent.font1)
-				.setGenderCombo(genderCombo = new JComboBox<>())
-				.setGender(this.parent.gender)
-				.setDepartmentCombo(departmentCombo = new JComboBox<>())
-				.setDepartment(this.parent.department)
-				.setFullTimeCombo(fullTimeCombo = new JComboBox<>())
-				.setFullTime(this.parent.fullTime)
-				.setSalary(salaryField = new JTextField(20))
-				.setSaveButton(save = new JButton("Save"))
-				.setSaveActionListener(this)
-				.setCancelButton(cancel = new JButton("Cancel"))
-				.setCancelActionListener(this)
+				.setGenderCombo(genderCombo = new JComboBox<>(), this.parent.gender)
+				.setDepartmentCombo(departmentCombo = new JComboBox<>(), this.parent.department)
+				.setFullTimeCombo(fullTimeCombo = new JComboBox<>(), this.parent.fullTime)
+				.setSalary(salaryField)
+				.setSaveButton(save = new JButton("Save"), this)
+				.setCancelButton(cancel = new JButton("Cancel"), this)
 				.build();
 	}
 

@@ -26,18 +26,11 @@ public class EmployeeDetailsDialogBuilder {
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setIdFieldEditable(boolean editable) {
-        idField.setEditable(editable);
-        return this;
-    }
-
-    public EmployeeDetailsDialogBuilder setIdField(JTextField idField) {
+    public EmployeeDetailsDialogBuilder setIdField(JTextField idField, boolean editable, int id) {
         this.idField = idField;
-        return this;
-    }
+        this.idField.setEditable(editable);
+        this.idField.setText(Integer.toString(id));
 
-    public EmployeeDetailsDialogBuilder setIdFieldText(String text) {
-        idField.setText(text);
         return this;
     }
 
@@ -61,55 +54,35 @@ public class EmployeeDetailsDialogBuilder {
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setGender(String[] genderOptions) {
-        gender = genderOptions;
-        genderCombo.setModel(new DefaultComboBoxModel<String>(gender));
-        return this;
-    }
-
-    public EmployeeDetailsDialogBuilder setDepartment(String[] departmentOptions) {
-        department = departmentOptions;
-        departmentCombo.setModel(new DefaultComboBoxModel<String>(department));
-        return this;
-    }
-
-    public EmployeeDetailsDialogBuilder setFullTime(String[] fullTimeOptions) {
-        fullTime = fullTimeOptions;
-        fullTimeCombo.setModel(new DefaultComboBoxModel<String>(fullTime));
-        return this;
-    }
-
-    public EmployeeDetailsDialogBuilder setSaveButton(JButton saveButton) {
+    public EmployeeDetailsDialogBuilder setSaveButton(JButton saveButton, ActionListener actionListener) {
         save = saveButton;
+        saveActionListener = actionListener;
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setCancelButton(JButton cancelButton) {
+    public EmployeeDetailsDialogBuilder setCancelButton(JButton cancelButton, ActionListener actionListener) {
         cancel = cancelButton;
+        cancelActionListener = actionListener;
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setSaveActionListener(ActionListener listener) {
-        saveActionListener = listener;
-        return this;
-    }
-
-    public EmployeeDetailsDialogBuilder setCancelActionListener(ActionListener listener) {
-        cancelActionListener = listener;
-        return this;
-    }
-
-    public EmployeeDetailsDialogBuilder setFullTimeCombo(JComboBox<String> fullTimeCombo) {
+    public EmployeeDetailsDialogBuilder setFullTimeCombo(JComboBox<String> fullTimeCombo, String[] fullTime) {
         this.fullTimeCombo = fullTimeCombo;
+        this.fullTime = fullTime;
+        this.fullTimeCombo.setModel(new DefaultComboBoxModel<String>(fullTime));
         return this;
     }
 
-    public EmployeeDetailsDialogBuilder setDepartmentCombo(JComboBox<String> departmentCombo) {
+    public EmployeeDetailsDialogBuilder setDepartmentCombo(JComboBox<String> departmentCombo, String[] department) {
         this.departmentCombo = departmentCombo;
+        this.department = department;
+        this.departmentCombo.setModel(new DefaultComboBoxModel<String>(department));
         return this;
     }
-    public EmployeeDetailsDialogBuilder setGenderCombo(JComboBox<String> genderCombo) {
+    public EmployeeDetailsDialogBuilder setGenderCombo(JComboBox<String> genderCombo, String[] gender) {
         this.genderCombo = genderCombo;
+        this.gender = gender;
+        this.genderCombo.setModel(new DefaultComboBoxModel<String>(gender));
         return this;
     }
 
