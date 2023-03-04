@@ -1003,6 +1003,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		} else if (e.getSource() == delete || e.getSource() == deleteButton) {
 			command = new DeleteCommand(this);
 		}
+		command.execute();
 	}// end actionPerformed
 
 	// content pane for main dialog
