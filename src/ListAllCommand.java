@@ -6,8 +6,15 @@ public class ListAllCommand extends Command {
     @Override
     public void execute() {
         if (employeeDetails.checkInput() && !employeeDetails.checkForChanges())
-            if (employeeDetails.isSomeoneToDisplay())
-                employeeDetails.displayRecords(employeeDetails.currentEmployee);
+            displayEmployeeSummaryDialog();
     }
+
+    // display Employee summary dialog
+    private void displayEmployeeSummaryDialog() {
+        // display Employee summary dialog if these is someone to display
+        if (employeeDetails.isSomeoneToDisplay())
+            new EmployeeSummaryDialog(employeeDetails.getAllEmployees());
+    }// end displaySummaryDialog
+
 }
 

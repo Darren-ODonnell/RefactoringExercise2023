@@ -6,6 +6,16 @@ public class SearchIdCommand extends Command {
     @Override
     public void execute() {
         if (employeeDetails.checkInput() && !employeeDetails.checkForChanges())
-            employeeDetails.searchEmployeeById();
+            displaySearchByIdDialog();
     }
+
+    void displaySearchByIdDialog() {
+        if (employeeDetails.isSomeoneToDisplay())
+            new SearchByIdDialog(employeeDetails);
+
+    }// end displaySearchByIdDialog
+
+
+
+
 }

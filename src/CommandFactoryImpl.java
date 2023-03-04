@@ -17,14 +17,15 @@ public class CommandFactoryImpl implements CommandFactory {
         } else if (this.parent.saveAs == source) {
             this.parent.change = false;
             return new SaveAsCommand(this.parent);
-        } else if (this.parent.searchById == source) {
-            return new SearchByIdCommand(this.parent);
-        } else if (this.parent.searchBySurname == source) {
-            return new SearchBySurnameDialogCommand(this.parent);
+//        } else if (this.parent.searchById == source) {
+//            return new SearchByIdCommand(this.parent);
+
+//        } else if (this.parent.searchBySurname == source) {
+//            return new SearchSurnameCommand(this.parent);
         } else if (this.parent.searchId == source || this.parent.searchByIdField == source) {
             return new SearchIdCommand(this.parent);
         } else if (this.parent.searchSurname == source || this.parent.searchBySurnameField == source) {
-            return new SearchSurnameCommand(this.parent);
+            return new SearchBySurnameDialogCommand(this.parent);
         } else if (this.parent.saveChange == source) {
             return new SaveChangesCommand(this.parent);
         } else if (this.parent.cancelChange == source) {

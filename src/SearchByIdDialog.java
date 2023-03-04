@@ -26,8 +26,8 @@ public class SearchByIdDialog extends SearchDialog {
 	// constructor for SearchByIdDialog 
 	public SearchByIdDialog(EmployeeDetails parent) {
 		super(parent);
-		setTitle("Search by Id");
-		setLabel("Id");
+		setText("Id", "Search By Id");
+		initScrollPane();
 
 	}// end SearchByIdDialog
 
@@ -43,7 +43,7 @@ public class SearchByIdDialog extends SearchDialog {
 		catch (NumberFormatException num) {
 			// display message and set colour to text field if entry is wrong
 			searchField.setBackground(new Color(255, 150, 150));
-			JOptionPane.showMessageDialog(null, "Wrong ID format!");
+			JOptionPane.showMessageDialog(null, "Invalid ID!");
 		}
 	}
 }// end class searchByIdDialog

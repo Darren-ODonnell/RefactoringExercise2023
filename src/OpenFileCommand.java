@@ -5,7 +5,7 @@ public class OpenFileCommand extends Command{
     @Override
     public void execute() {
         if (employeeDetails.checkInput() && !employeeDetails.checkForChanges())
-            employeeDetails.exitApp();
+            employeeDetails.openFile();
     }
 }
 

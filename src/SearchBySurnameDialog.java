@@ -23,9 +23,8 @@ public class SearchBySurnameDialog extends SearchDialog{
 	// constructor for search by surname dialog
 	public SearchBySurnameDialog(EmployeeDetails parent) {
 		super(parent);
-
-		setTitle("Search by Surname");
-		setLabel("Surname");
+		setText("Surname", "Search By Surname");
+		initScrollPane();
 
 	}// end SearchBySurnameDialog
 
@@ -33,7 +32,9 @@ public class SearchBySurnameDialog extends SearchDialog{
 	protected void searchAction() {
 		this.parent.searchBySurnameField.setText(searchField.getText());
 		// search Employee by surname
+
 		this.parent.searchEmployeeBySurname();
+
 		dispose();// dispose dialog
 	}
 }// end class SearchBySurnameDialog

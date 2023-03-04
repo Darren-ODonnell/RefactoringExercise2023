@@ -6,7 +6,16 @@ public class SearchBySurnameDialogCommand extends Command {
     @Override
     public void execute() {
         if (employeeDetails.checkInput() && !employeeDetails.checkForChanges())
-            employeeDetails.displaySearchBySurnameDialog();
+            displaySearchBySurnameDialog();
 
     }
+
+    // display search by surname dialog
+    private void displaySearchBySurnameDialog() {
+        if (employeeDetails.isSomeoneToDisplay())
+            new SearchBySurnameDialog(employeeDetails);
+    }// end displaySearchBySurnameDialog
+
+
+
 }

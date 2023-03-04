@@ -16,6 +16,15 @@ public abstract class SearchDialog extends JDialog implements ActionListener {
         this.parent = parent;
         setModal(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    }
+
+    public void setText(String label, String title){
+        this.label = label;
+        this.title = title;
+    }
+
+    public void initScrollPane(){
         JScrollPane scrollPane = new JScrollPane(searchPane());
         setContentPane(scrollPane);
         getRootPane().setDefaultButton(search);
@@ -24,16 +33,17 @@ public abstract class SearchDialog extends JDialog implements ActionListener {
         setVisible(true);
     }
 
+
     public Container searchPane(){
         JPanel searchPanel = new JPanel(new GridLayout(3, 1));
         JPanel textPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
         JLabel searchLabel;
 
-        searchPanel.add(new JLabel("Search by " + getLabel()));
+        searchPanel.add(new JLabel(title));
 
         textPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        textPanel.add(searchLabel = new JLabel("Enter " + getLabel() +":"));
+        textPanel.add(searchLabel = new JLabel("Enter " + this.label +":"));
         searchLabel.setFont(this.parent.font1);
         textPanel.add(searchField = new JTextField(20));
         searchField.setFont(this.parent.font1);

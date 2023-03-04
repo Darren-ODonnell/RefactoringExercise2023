@@ -93,7 +93,11 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	JButton saveChange;
 	JButton cancelChange;
 	private JComboBox<String> genderCombo, departmentCombo, fullTimeCombo;
-	private JTextField idField, ppsField, surnameField, firstNameField, salaryField;
+	private JTextField idField;
+	private JTextField ppsField;
+	JTextField surnameField;
+	private JTextField firstNameField;
+	private JTextField salaryField;
 	private static EmployeeDetails frame = new EmployeeDetails();
 	// font for labels, text fields and combo boxes
 	Font font1 = new Font("SansSerif", Font.BOLD, 16);
@@ -359,24 +363,9 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		change = false;
 	}// end display records
 
-	// display Employee summary dialog
-	private void displayEmployeeSummaryDialog() {
-		// display Employee summary dialog if these is someone to display
-		if (isSomeoneToDisplay())
-			new EmployeeSummaryDialog(getAllEmloyees());
-	}// end displaySummaryDialog
 
-	// display search by ID dialog
-	private void displaySearchByIdDialog() {
-		if (isSomeoneToDisplay())
-			new SearchByIdDialog(EmployeeDetails.this);
-	}// end displaySearchByIdDialog
 
-	// display search by surname dialog
-	void displaySearchBySurnameDialog() {
-		if (isSomeoneToDisplay())
-			new SearchBySurnameDialog(EmployeeDetails.this);
-	}// end displaySearchBySurnameDialog
+
 
 	// find byte start in file for first active record
 	void firstRecord() {
@@ -475,16 +464,22 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 					nextRecord();// look for next record
 					// loop until Employee found or until all Employees have
 					// been checked
-					while (firstId != currentEmployee.getEmployeeId()) {
+					do{
+
 						// if found break from loop and display Employee details
 						// else look for next record
-						if (Integer.parseInt(searchByIdField.getText().trim()) == currentEmployee.getEmployeeId()) {
+						String searchStr = searchByIdField.getText().trim();
+						if (Integer.parseInt(searchStr) == currentEmployee.getEmployeeId()) {
 							found = true;
 							displayRecords(currentEmployee);
 							break;
 						} else
 							nextRecord();// look for next record
-					} // end while
+					}
+					while (firstId != currentEmployee.getEmployeeId());
+
+
+					// end while
 				} // end else
 					// if Employee not found display message
 				if (!found)
@@ -499,43 +494,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		searchByIdField.setText("");
 	}// end searchEmployeeByID
 
-	// search Employee by surname
-	public void searchEmployeeBySurname() {
-		boolean found = false;
-		// if any active Employee record search for ID else do nothing
-		if (isSomeoneToDisplay()) {
-			firstRecord();// look for first record
-			String firstSurname = currentEmployee.getSurname().trim();
-			// if ID to search is already displayed do nothing else loop through
-			// records
-			if (searchBySurnameField.getText().trim().equalsIgnoreCase(surnameField.getText().trim()))
-				found = true;
-			else if (searchBySurnameField.getText().trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
-				found = true;
-				displayRecords(currentEmployee);
-			} // end else if
-			else {
-				nextRecord();// look for next record
-				// loop until Employee found or until all Employees have been
-				// checked
-				while (!firstSurname.trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
-					// if found break from loop and display Employee details
-					// else look for next record
-					if (searchBySurnameField.getText().trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
-						found = true;
-						displayRecords(currentEmployee);
-						break;
-					} // end if
-					else
-						nextRecord();// look for next record
-				} // end while
-			} // end else
-				// if Employee not found display message
-			if (!found)
-				JOptionPane.showMessageDialog(null, "Employee not found!");
-		} // end if
-		searchBySurnameField.setText("");
-	}// end searchEmployeeBySurname
+
 
 	// get next free ID from Employees in the file
 	public int getNextFreeId() {
@@ -559,10 +518,18 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		if (((String) fullTimeCombo.getSelectedItem()).equalsIgnoreCase("Yes"))
 			fullTime = true;
 
+		String salaryStr = salaryField.getText();
+		// Remove the leading euro symbol and remove all commas
+
+		if(!salaryStr.isEmpty())
+			salaryStr = salaryStr.substring(1).replace(",", "");
+
+
 		theEmployee = new Employee(Integer.parseInt(idField.getText()), ppsField.getText().toUpperCase(),
 				surnameField.getText().toUpperCase(), firstNameField.getText().toUpperCase(),
 				genderCombo.getSelectedItem().toString().charAt(0), departmentCombo.getSelectedItem().toString(),
-				Double.parseDouble(salaryField.getText()), fullTime);
+
+				Double.parseDouble(salaryStr), fullTime);
 
 		return theEmployee;
 	}// end getChangedDetails
@@ -599,7 +566,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end deleteDecord
 
 	// create vector of vectors with all Employee details
-	private Vector<Object> getAllEmloyees() {
+	Vector<Object> getAllEmployees() {
 		// vector of Employee objects
 		Vector<Employee> allEmployee = new Vector<Employee>();
 //		Vector<Employee> empDetails;// vector of each employee details
@@ -675,30 +642,6 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		return someoneToDisplay;
 	}// end isSomeoneToDisplay
 
-	// check for correct PPS format and look if PPS already in use
-	public boolean correctPps(String pps, long currentByte) {
-		boolean ppsExist = false;
-		// check for correct PPS format based on assignment description
-		if (pps.length() == 8 || pps.length() == 9) {
-			if (Character.isDigit(pps.charAt(0)) && Character.isDigit(pps.charAt(1))
-					&& Character.isDigit(pps.charAt(2))	&& Character.isDigit(pps.charAt(3))
-					&& Character.isDigit(pps.charAt(4))	&& Character.isDigit(pps.charAt(5))
-					&& Character.isDigit(pps.charAt(6))	&& Character.isLetter(pps.charAt(7))
-					&& (pps.length() == 8 || Character.isLetter(pps.charAt(8)))) {
-				// open file for reading
-				application.openReadFile(file.getAbsolutePath());
-				// look in file is PPS already in use
-				ppsExist = application.isPpsExist(pps, currentByte);
-				application.closeReadFile();// close file for reading
-			} // end if
-			else
-				ppsExist = true;
-		} // end if
-		else
-			ppsExist = true;
-
-		return ppsExist;
-	}// end correctPPS
 
 	// check if file name has extension .dat
 	private boolean checkFileName(File fileName) {
@@ -796,7 +739,7 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}// end setEnabled
 
 	// open file
-	private void openFile() {
+	void openFile() {
 		final JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle("Open");
 		// display files in File Chooser only with extension .dat
@@ -989,6 +932,43 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 		command.execute();
 	}// end actionPerformed
 
+	public void searchEmployeeBySurname() {
+		boolean found = false;
+		// if any active Employee record search for ID else do nothing
+		if (isSomeoneToDisplay()) {
+			firstRecord();// look for first record
+			String firstSurname = currentEmployee.getSurname().trim();
+			// if ID to search is already displayed do nothing else loop through
+			// records
+			if (searchBySurnameField.getText().trim().equalsIgnoreCase(surnameField.getText().trim()))
+				found = true;
+			else if (searchBySurnameField.getText().trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
+				found = true;
+				displayRecords(currentEmployee);
+			} // end else if
+			else {
+				nextRecord();// look for next record
+				// loop until Employee found or until all Employees have been
+				// checked
+				while (!firstSurname.trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
+					// if found break from loop and display Employee details
+					// else look for next record
+					if (searchBySurnameField.getText().trim().equalsIgnoreCase(currentEmployee.getSurname().trim())) {
+						found = true;
+						displayRecords(currentEmployee);
+						break;
+					} // end if
+					else
+						nextRecord();// look for next record
+				} // end while
+			} // end else
+			// if Employee not found display message
+			if (!found)
+				JOptionPane.showMessageDialog(null, "Employee not found!");
+		} // end if
+		searchBySurnameField.setText("");
+	}// end searchEmployeeBySurname
+
 	// content pane for main dialog
 	private void createContentPane() {
 		setTitle("Employee Details");
@@ -1072,8 +1052,5 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	}
 
 	public void windowOpened(WindowEvent e) {
-	}
-
-	public void displaySearchIdDialog() {
 	}
 }// end class EmployeeDetails
