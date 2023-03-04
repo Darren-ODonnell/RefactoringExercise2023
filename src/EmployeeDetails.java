@@ -63,13 +63,35 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 	// hold file name and path for current file in use
 	protected File file;
 	// holds true or false if any changes are made for text fields
-	private boolean change = false;
+	boolean change = false;
 	// holds true or false if any changes are made for file content
 	boolean changesMade = false;
-	private JMenuItem open, save, saveAs, create, modify, delete, firstItem, lastItem, nextItem, prevItem, searchById,
-			searchBySurname, listAll, closeApp;
-	private JButton first, previous, next, last, add, edit, deleteButton, displayAll, searchId, searchSurname,
-			saveChange, cancelChange;
+	JMenuItem open;
+	JMenuItem save;
+	JMenuItem saveAs;
+	JMenuItem create;
+	JMenuItem modify;
+	JMenuItem delete;
+	JMenuItem firstItem;
+	JMenuItem lastItem;
+	JMenuItem nextItem;
+	JMenuItem prevItem;
+	JMenuItem searchById;
+	JMenuItem searchBySurname;
+	JMenuItem listAll;
+	JMenuItem closeApp;
+	JButton first;
+	JButton previous;
+	JButton next;
+	JButton last;
+	JButton add;
+	JButton edit;
+	JButton deleteButton;
+	JButton displayAll;
+	JButton searchId;
+	JButton searchSurname;
+	JButton saveChange;
+	JButton cancelChange;
 	private JComboBox<String> genderCombo, departmentCombo, fullTimeCombo;
 	private JTextField idField, ppsField, surnameField, firstNameField, salaryField;
 	private static EmployeeDetails frame = new EmployeeDetails();
@@ -962,47 +984,8 @@ public class EmployeeDetails extends JFrame implements ActionListener, ItemListe
 
 	// action listener for buttons, text field and menu items
 	public void actionPerformed(ActionEvent e) {
-		Command command = null;
-
-		if (e.getSource() == closeApp) {
-			command = new CloseAppCommand(this);
-		} else if (e.getSource() == open) {
-			command = new OpenFileCommand(this);
-		} else if (e.getSource() == save) {
-			command = new SaveFileCommand(this);
-			change = false;
-		} else if (e.getSource() == saveAs) {
-			command = new SaveAsCommand(this);
-			change = false;
-		} else if (e.getSource() == searchById) {
-			command = new SearchByIdCommand(this);
-		} else if (e.getSource() == searchBySurname) {
-			command = new SearchBySurnameDialogCommand();
-		} else if (e.getSource() == searchId || e.getSource() == searchByIdField)
-			command = new SearchIdCommand(this);
-		else if (e.getSource() == searchSurname || e.getSource() == searchBySurnameField)
-			command = new SearchSurnameCommand(this);
-		else if (e.getSource() == saveChange) {
-			command = new SaveChangesCommand(this);
-		} else if (e.getSource() == cancelChange)
-			command = new CancelChangeCommand(this);
-		else if (e.getSource() == firstItem || e.getSource() == first) {
-			command = new FirstItemCommand(this);
-		} else if (e.getSource() == prevItem || e.getSource() == previous) {
-			command = new PreviousItemCommand(this);
-		} else if (e.getSource() == nextItem || e.getSource() == next) {
-			command = new NextItemCommand(this);
-		} else if (e.getSource() == lastItem || e.getSource() == last) {
-			command = new LastItemCommand(this);
-		} else if (e.getSource() == listAll || e.getSource() == displayAll) {
-			command = new ListAllCommand(this);
-		} else if (e.getSource() == create || e.getSource() == add) {
-			command = new CreateAddRecordDialogCommand(this);
-		} else if (e.getSource() == modify || e.getSource() == edit) {
-			command = new ModifyCommand(this);
-		} else if (e.getSource() == delete || e.getSource() == deleteButton) {
-			command = new DeleteCommand(this);
-		}
+		CommandFactory commandFactory = new CommandFactoryImpl(this);
+		Command command = commandFactory.createCommand(e.getSource());
 		command.execute();
 	}// end actionPerformed
 
